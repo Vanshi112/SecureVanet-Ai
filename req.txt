@@ -6,3 +6,6 @@ tensorflow
 seaborn
 ipykernel
 pathlib 
+torch
+tensorboard
+ tqdm

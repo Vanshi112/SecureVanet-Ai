@@ -6,14 +6,12 @@ __pycache__/
 .venv/
 venv/
 env/
-
 .ipynb_checkpoints/
 
 .vscode/
 .idea/
 
 .DS_Store
-
 datasets/processed/
 datasets/interim/
 datasets/raw/
