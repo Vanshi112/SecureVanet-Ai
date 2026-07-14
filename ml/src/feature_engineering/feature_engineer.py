@@ -15,7 +15,7 @@ class FeatureEngineeringPipeline:
         self.output_file = Path(output_file)
 
     def load_dataset(self):
-        self.df = pd.read_csv(self.input_file,nrows=10000)
+        self.df = pd.read_csv(self.input_file)
         print(f"Dataset Shape : {self.df.shape}")
 
     def apply_time_features(self):
@@ -33,8 +33,7 @@ class FeatureEngineeringPipeline:
             CANFeatureEngineer(self.df).transform()
         )
 
-    def apply_behavior_features(self):
-        self.df = (
+    def apply_behavior_features(self): self.df = (
             BehaviorFeatureEngineer(self.df).transform()
         )
 
