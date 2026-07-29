@@ -1,0 +1,176 @@
+from pathlib import Path
+import sys
+from collections import Counter
+import shutil
+import numpy as np
+import pandas as pd
+import joblib
+
+from models.config import ModelConfig
+from inference.predictor import Predictor
+from feature_engineering.feature_engineer import FeatureEngineeringPipeline
+from inference.inference_sequence_generator import InferenceSequenceGenerator
+
+
+def main():
+
+    # --------------------------------------------------
+    # Input CSV
+    # --------------------------------------------------
+
+    if len(sys.argv) > 1:
+        INPUT_CSV = sys.argv[1]
+    else:
+        INPUT_CSV = "sample_10000.csv"
+
+    ENGINEERED_CSV = "temp_engineered.csv"
+
+    print("=" * 70)
+    print(f"Input File : {INPUT_CSV}")
+    print("=" * 70)
+
+    # --------------------------------------------------
+    # Feature Engineering
+    # --------------------------------------------------
+
+    print("\nRunning Feature Engineering...")
+
+    pipeline = FeatureEngineeringPipeline(
+        INPUT_CSV,
+        ENGINEERED_CSV
+    )
+
+    pipeline.run()
+    shutil.copy(
+    ENGINEERED_CSV,
+    "debug_inference_engineered.csv"
+    )
+
+    print("Saved debug_inference_engineered.csv")
+    # --------------------------------------------------
+    # Generate Sequences
+    # --------------------------------------------------
+
+    print("\nLoading Engineered Features...")
+
+    df = pd.read_csv(ENGINEERED_CSV)
+
+    X = df.drop(
+        columns=[
+            "label",
+            "attack_type",
+            "timestamp"
+        ],
+        errors="ignore")
+
+    print("\nInference Feature Names:")
+    print(X.columns.tolist())
+
+    np.save("debug_feature_names.npy", np.array(X.columns.tolist(), dtype=object))
+
+    print("\nLoading Feature Scaler...")
+
+    scaler = joblib.load(
+        "datasets/sequences/feature_scaler.pkl"
+    )
+
+    X_scaled = scaler.transform(X)
+
+    X_scaled = pd.DataFrame(
+        X_scaled,
+        columns=X.columns
+    )
+
+    print("Feature scaling complete.")
+
+    print("\nGenerating Sequences...")
+
+    generator = InferenceSequenceGenerator(
+        sequence_length=32
+    )
+
+    sequences = generator.generate(X_scaled)
+
+    # DEBUG
+    np.save("debug_infer_seq.npy", sequences[:1])
+    print("Saved debug inference sequence.")
+
+    print(f"Generated {len(sequences)} sequences")
+
+    # --------------------------------------------------
+    # Load Model
+    # --------------------------------------------------
+
+    config = ModelConfig()
+
+    predictor = Predictor(config)
+
+    # --------------------------------------------------
+    # Predict
+    # --------------------------------------------------
+
+    predictions = []
+    confidences = []
+
+    for seq in sequences:
+
+        result = predictor.predict(seq)
+
+        predictions.append(result["class"])
+        confidences.append(result["confidence"])
+
+    counts = Counter(predictions)
+
+    total = len(predictions)
+
+    # --------------------------------------------------
+    # Results
+    # --------------------------------------------------
+
+    print("\n")
+    print("=" * 70)
+    print("Prediction Summary")
+    print("=" * 70)
+
+    for cls in predictor.class_names:
+
+        count = counts.get(cls, 0)
+
+        percentage = (
+            count / total * 100
+            if total > 0 else 0
+        )
+
+        print(
+            f"{cls:<10}: "
+            f"{count:>8} "
+            f"({percentage:6.2f}%)"
+        )
+
+    print("-" * 70)
+
+    final_prediction = counts.most_common(1)[0][0]
+
+    print(
+        f"Final Prediction : {final_prediction}"
+    )
+
+    print(
+        f"Average Confidence : "
+        f"{np.mean(confidences):.4f}"
+    )
+
+    print("=" * 70)
+
+    # --------------------------------------------------
+    # Cleanup
+    # --------------------------------------------------
+
+    try:
+        Path(ENGINEERED_CSV).unlink()
+    except Exception:
+        pass
+
+
+if __name__ == "__main__":
+    main()
