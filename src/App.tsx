@@ -5,6 +5,7 @@ import { Sidebar } from './components/layout/Sidebar';
 import { SlideoverNotifications } from './components/layout/SlideoverNotifications';
 import { BackendOfflineModal } from './components/modals/BackendOfflineModal';
 import { Dashboard } from './pages/Dashboard';
+import NetworkTopology from './pages/NetworkTopology';
 import { UploadDataset } from './pages/UploadDataset';
 import { HistoryPage } from './pages/History';
 import { LiveMonitoring } from './pages/LiveMonitoring';
@@ -13,9 +14,12 @@ import { NotificationProvider, useNotifications } from './store/NotificationCont
 import { useBackendHealth } from './hooks/useBackendHealth';
 import { ShieldAlert, CheckCircle } from 'lucide-react';
 
+
+
 const AppContent: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  
   const [isModalDismissed, setIsModalDismissed] = useState(false);
 
   const { isBackendConnected, isChecking, error, checkHealth } = useBackendHealth();
@@ -44,6 +48,7 @@ const AppContent: React.FC = () => {
             <Route path="/upload" element={<UploadDataset />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/live" element={<LiveMonitoring />} />
+            <Route path="/topology" element={<NetworkTopology />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

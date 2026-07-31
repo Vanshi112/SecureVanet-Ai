@@ -20,8 +20,11 @@ class RealWebSocketService {
       this.ws = new WebSocket(wsUrl);
 
       this.ws.onopen = () => {
+        console.log("✅ WebSocket Connected");
+
         this.isConnected = true;
         this.notifyStatus(true);
+
         if (this.reconnectTimer) {
           clearTimeout(this.reconnectTimer);
           this.reconnectTimer = null;
@@ -52,14 +55,19 @@ class RealWebSocketService {
         }
       };
 
-      this.ws.onerror = (err) => {
-        console.warn('[WebSocket] Connection error:', err);
-        this.notifyStatus(false, 'WebSocket connection failed');
-      };
+     this.ws.onerror = (err) => {
+      console.error("❌ WebSocket Error", err);
 
-      this.ws.onclose = () => {
+      this.notifyStatus(false, "WebSocket connection failed");
+    };
+
+     this.ws.onclose = (event) => {
+        console.log("❌ CLOSED", event);
+
         this.isConnected = false;
+
         this.notifyStatus(false);
+
         if (this.shouldReconnect) {
           this.scheduleReconnect();
         }

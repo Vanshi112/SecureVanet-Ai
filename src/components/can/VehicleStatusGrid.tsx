@@ -9,17 +9,19 @@ interface VehicleStatusGridProps {
 
 export const VehicleStatusGrid: React.FC<VehicleStatusGridProps> = ({ vehicle }) => {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
       <motion.div
         whileHover={{ scale: 1.02 }}
-        className="glass-panel p-3.5 rounded-xl border border-slate-800 relative overflow-hidden"
+        className="glass-panel p-5 rounded-xl border border-slate-800 relative overflow-hidden"
       >
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Speed</span>
-          <Gauge className="w-4 h-4 text-blue-400" />
+          <span className="text-sm text-slate-400">
+                  Speed
+                </span>
+          <Gauge className="w-5 h-5 text-blue-400" />
         </div>
         <div className="mt-2 flex items-baseline gap-1">
-          <span className="text-xl font-bold font-mono-tech text-white">{vehicle.speed.toFixed(1)}</span>
+          <span className="text-2xl  font-semibold text-white">{vehicle.speed.toFixed(1)}</span>
           <span className="text-xs font-medium text-slate-400">km/h</span>
         </div>
         <div className="mt-2 w-full bg-slate-800 rounded-full h-1">
@@ -31,15 +33,20 @@ export const VehicleStatusGrid: React.FC<VehicleStatusGridProps> = ({ vehicle })
       </motion.div>
 
       <motion.div
-        whileHover={{ scale: 1.02 }}
-        className="glass-panel p-3.5 rounded-xl border border-slate-800 relative overflow-hidden"
+        whileHover={{
+                y: -4,
+                scale: 1.02
+            }}
+        className="glass-panel p-5 rounded-xl border border-slate-800 relative overflow-hidden"
       >
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">RPM</span>
-          <Zap className="w-4 h-4 text-amber-400" />
+          <span className="text-sm text-slate-400">
+                RPM
+              </span>
+          <Zap className="w-5 h-5 text-amber-400" />
         </div>
         <div className="mt-2 flex items-baseline gap-1">
-          <span className="text-xl font-bold font-mono-tech text-white">{vehicle.rpm}</span>
+          <span className="text-2xl font-semibold text-white">{vehicle.rpm}</span>
           <span className="text-xs font-medium text-slate-400">rpm</span>
         </div>
         <div className="mt-2 w-full bg-slate-800 rounded-full h-1">
@@ -54,11 +61,11 @@ export const VehicleStatusGrid: React.FC<VehicleStatusGridProps> = ({ vehicle })
 
       <motion.div
         whileHover={{ scale: 1.02 }}
-        className="glass-panel p-3.5 rounded-xl border border-slate-800 relative overflow-hidden"
+        className="glass-panel p-5 rounded-xl border border-slate-800 relative overflow-hidden"
       >
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Brake</span>
-          <Disc className={`w-4 h-4 ${vehicle.brake ? 'text-red-400 animate-pulse' : 'text-slate-500'}`} />
+          <span className="text-sm text-slate-400">Brake</span>
+          <Disc className={`w-5 h-5 ${vehicle.brake ? 'text-red-400 animate-pulse' : 'text-slate-500'}`} />
         </div>
         <div className="mt-2 flex items-center gap-1.5">
           <span
@@ -71,51 +78,48 @@ export const VehicleStatusGrid: React.FC<VehicleStatusGridProps> = ({ vehicle })
             {vehicle.brake ? 'ENGAGED' : 'RELEASED'}
           </span>
         </div>
-        <div className="mt-2 text-[10px] text-slate-500">Hydraulic Pressure Nominal</div>
       </motion.div>
 
       <motion.div
         whileHover={{ scale: 1.02 }}
-        className="glass-panel p-3.5 rounded-xl border border-slate-800 relative overflow-hidden"
+        className="glass-panel p-5 rounded-xl border border-slate-800 relative overflow-hidden"
       >
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Gear</span>
-          <Activity className="w-4 h-4 text-cyan-400" />
+          <Activity className="w-5 h-5 text-cyan-400" />
         </div>
         <div className="mt-2 flex items-baseline gap-1">
-          <span className="text-xl font-bold font-mono-tech text-cyan-400">{vehicle.gear}</span>
-          <span className="text-xs font-medium text-slate-400">Position</span>
+          <span className="text-2xl font-semibold text-cyan-400">{vehicle.gear}</span>
         </div>
-        <div className="mt-2 text-[10px] text-slate-500">Auto Drive Mode</div>
+     
       </motion.div>
 
       <motion.div
         whileHover={{ scale: 1.02 }}
-        className="glass-panel p-3.5 rounded-xl border border-slate-800 relative overflow-hidden"
+        className="glass-panel p-5 rounded-xl border border-slate-800 relative overflow-hidden"
       >
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Steering</span>
-          <Compass className="w-4 h-4 text-purple-400" />
+          <Compass className="w-5 h-5 text-purple-400" />
         </div>
         <div className="mt-2 flex items-baseline gap-1">
-          <span className="text-xl font-bold font-mono-tech text-white">
+          <span className="text-2xl font-semibold text-white">
             {vehicle.steeringAngle > 0 ? `+${vehicle.steeringAngle}` : vehicle.steeringAngle}°
           </span>
         </div>
-        <div className="mt-2 text-[10px] text-slate-500">CAN ID 0x0250 Sensor</div>
       </motion.div>
 
       <motion.div
         whileHover={{ scale: 1.02 }}
-        className="glass-panel p-3.5 rounded-xl border border-slate-800 relative overflow-hidden"
+        className="glass-panel p-5 rounded-xl border border-slate-800 relative overflow-hidden"
       >
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Bus Load</span>
-          <Cpu className="w-4 h-4 text-emerald-400" />
+          <Cpu className="w-5 h-5 text-emerald-400" />
         </div>
         <div className="mt-2 flex items-baseline gap-1">
           <span
-            className={`text-xl font-bold font-mono-tech ${
+            className={`text-2xl font-semibold ${
               vehicle.busLoad > 75 ? 'text-red-400' : 'text-emerald-400'
             }`}
           >

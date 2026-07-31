@@ -109,7 +109,7 @@ export const HistoryPage: React.FC = () => {
             </h2>
           </div>
           <p className="text-xs text-slate-400">
-            Historical log of all neural network predictions and uploaded CAN telemetry datasets.
+            View and manage previous intrusion detection analyses.
           </p>
         </div>
 
@@ -140,7 +140,7 @@ export const HistoryPage: React.FC = () => {
             <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
             <input
               type="text"
-              placeholder="Search filename or attack type..."
+              placeholder="Search filename or Threa..."
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);

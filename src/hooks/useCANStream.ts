@@ -74,7 +74,7 @@ export function useCANStream() {
     }
 
     setModelLatencyMs(parseFloat((0.7 + Math.random() * 0.4).toFixed(2)));
-  }, [addNotification]);
+  }, []);
 
   useEffect(() => {
     if (mode === 'simulation') {
@@ -105,7 +105,7 @@ export function useCANStream() {
         realWebSocketService.disconnect();
       };
     }
-  }, [mode, handleIncomingPacket, addNotification]);
+  }, [mode]);
 
   useEffect(() => {
     const timer = setInterval(() => {

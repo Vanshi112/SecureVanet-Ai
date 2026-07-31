@@ -38,6 +38,7 @@ export const LiveMonitoring: React.FC = () => {
   } = useCANStream();
 
   return (
+
     <div className="space-y-6 pb-12">
       <AlertBanner
         threatLevel={currentThreatLevel}
@@ -47,21 +48,18 @@ export const LiveMonitoring: React.FC = () => {
 
       <div className="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 glow-red">
-            <Activity className="w-6 h-6 animate-pulse" />
+         <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-blue-500/20 bg-blue-500/10">
+           <Activity className="h-7 w-7 text-blue-400" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-bold text-white uppercase tracking-wider font-mono-tech">
-                Live CAN Telemetry Stream
+              <h2 className="text-3xl font-semibold text-white">
+                Live CAN Monitor
               </h2>
-              <span className="px-2 py-0.5 text-[10px] font-extrabold rounded bg-red-500/20 text-red-400 border border-red-500/40 animate-pulse">
-                REALTIME IDS
-              </span>
             </div>
-            <p className="text-xs text-slate-400">
-              High-throughput vehicular CAN bus frame evaluation powered by SocketCAN & Transformer AI.
-            </p>
+           <p className="mt-1 text-sm text-slate-500">
+            AI-powered intrusion detection for vehicular CAN networks.
+             </p>
           </div>
         </div>
 
@@ -75,7 +73,7 @@ export const LiveMonitoring: React.FC = () => {
             }`}
           >
             <Radio className="w-4 h-4" />
-            Simulation Mode
+            Simulation 
           </button>
 
           <button
@@ -87,55 +85,94 @@ export const LiveMonitoring: React.FC = () => {
             }`}
           >
             <Cpu className="w-4 h-4" />
-            Real Mode (WebSocket /ws/live)
+            Live Data
+
+            
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        <div className="glass-panel p-4 rounded-xl border border-slate-800">
-          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">CAN Interface</p>
-          <div className="mt-2 flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-base font-bold font-mono-tech text-white">can0: ACTIVE</span>
-          </div>
-          <p className="text-[10px] text-slate-500 mt-1">
-            {mode === 'real' ? (isWsConnected ? 'SocketCAN /ws/live Connected' : 'Connecting WS...') : 'Simulator Engine'}
-          </p>
-        </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
 
-        <div className="glass-panel p-4 rounded-xl border border-slate-800">
-          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Packets / Sec</p>
-          <div className="mt-2 text-xl font-black font-mono-tech text-blue-400">
-            {packetsPerSec.toLocaleString()} <span className="text-xs text-slate-400 font-normal">pkts/s</span>
-          </div>
-          <p className="text-[10px] text-slate-500 mt-1">Bus Utilization 500 kbps</p>
-        </div>
+  {/* Status */}
 
-        <div className="glass-panel p-4 rounded-xl border border-slate-800">
-          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Total Packets Streamed</p>
-          <div className="mt-2 text-xl font-black font-mono-tech text-white">
-            {totalPacketsCount.toLocaleString()}
-          </div>
-          <p className="text-[10px] text-slate-500 mt-1">Evaluated by Transformer</p>
-        </div>
+  <div className="glass-panel rounded-2xl border border-slate-800 p-5">
 
-        <div className="glass-panel p-4 rounded-xl border border-slate-800">
-          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Current Threat Status</p>
-          <div className="mt-2">
-            <Badge severity={currentThreatLevel}>{currentThreatLevel}</Badge>
-          </div>
-          <p className="text-[10px] text-slate-500 mt-1">{activeAttackType}</p>
-        </div>
+    <p className="text-sm text-slate-400">
+      System Status
+    </p>
 
-        <div className="glass-panel p-4 rounded-xl border border-slate-800">
-          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Model Latency</p>
-          <div className="mt-2 text-xl font-black font-mono-tech text-amber-400">
-            {modelLatencyMs} <span className="text-xs text-slate-400 font-normal">ms</span>
-          </div>
-          <p className="text-[10px] text-slate-500 mt-1">Sub-millisecond inference</p>
-        </div>
-      </div>
+    <div className="mt-4 flex items-center gap-3">
+
+      <span
+        className={`h-3 w-3 rounded-full ${
+          mode === "real"
+            ? isWsConnected
+              ? "bg-green-500 animate-pulse"
+              : "bg-red-500"
+            : "bg-blue-500"
+        }`}
+      />
+
+      <span className="text-2xl font-semibold text-white">
+        {mode === "real"
+          ? isWsConnected
+            ? "Online"
+            : "Offline"
+          : "Simulation"}
+      </span>
+
+    </div>
+
+  </div>
+
+  {/* Packets */}
+
+  <div className="glass-panel rounded-2xl border border-slate-800 p-5">
+
+    <p className="text-sm text-slate-400">
+      Packets / sec
+    </p>
+
+    <h2 className="mt-4 text-3xl font-bold text-blue-400">
+      {packetsPerSec.toLocaleString()}
+    </h2>
+
+  </div>
+
+  {/* Threat */}
+
+  <div className="glass-panel rounded-2xl border border-slate-800 p-5">
+
+    <p className="text-sm text-slate-400">
+      Threat Level
+    </p>
+
+    <div className="mt-4">
+
+      <Badge severity={currentThreatLevel}>
+        {currentThreatLevel}
+      </Badge>
+
+    </div>
+
+  </div>
+
+  {/* Latency */}
+
+  <div className="glass-panel rounded-2xl border border-slate-800 p-5">
+
+    <p className="text-sm text-slate-400">
+      Detection Latency
+    </p>
+
+    <h2 className="mt-4 text-3xl font-bold text-amber-400">
+      {modelLatencyMs} ms
+    </h2>
+
+  </div>
+
+</div>
 
       <VehicleStatusGrid vehicle={vehicle} />
 
@@ -237,7 +274,6 @@ export const LiveMonitoring: React.FC = () => {
             </div>
             <RealtimePacketsChart packetsPerSec={packetsPerSec} />
           </div>
-
           <LiveTerminalConsole logs={terminalLogs} onClear={clearTerminalLogs} />
         </div>
 

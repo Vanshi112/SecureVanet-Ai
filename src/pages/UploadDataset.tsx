@@ -50,7 +50,7 @@ export const UploadDataset: React.FC = () => {
     setIsProcessing(true);
     setError(null);
     setUploadProgress(15);
-    setProcessingStage('Uploading CSV dataset to FastAPI backend...');
+    setProcessingStage('Uploading dataset...');
 
     try {
       const data = await predictionService.uploadAndPredict(file, (progressEvent) => {
@@ -59,11 +59,11 @@ export const UploadDataset: React.FC = () => {
       });
 
       setUploadProgress(70);
-      setProcessingStage('Extracting 41 CAN bus features & temporal sequence window (32 frames)...');
+      setProcessingStage('Preparing data...');
       await new Promise(r => setTimeout(r, 600));
 
       setUploadProgress(90);
-      setProcessingStage('Executing Transformer + BiLSTM Neural Network classifier...');
+      setProcessingStage('Analyzing dataset...');
       await new Promise(r => setTimeout(r, 400));
 
       setUploadProgress(100);
@@ -78,7 +78,7 @@ export const UploadDataset: React.FC = () => {
       );
     } catch (err: any) {
       setError(err?.response?.data?.detail || err?.message || 'Failed to process dataset on backend.');
-      addNotification('Upload Failed', 'Failed to communicate with FastAPI prediction API', 'error', 'backend');
+      addNotification('Upload Failed', 'Unable to analyze the uploaded dataset', 'error', 'backend');
     } finally {
       setIsProcessing(false);
     }
@@ -119,13 +119,14 @@ export const UploadDataset: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-12">
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-black text-white tracking-tight font-mono-tech uppercase">
-          Neural Intrusion Evaluation Upload
-        </h2>
-        <p className="text-xs text-slate-400 max-w-xl mx-auto">
-          Upload CAN bus telemetry dataset files (`.csv`) for real-time classification by our trained Transformer + BiLSTM Neural Network.
-        </p>
-      </div>
+      <h2 className="text-3xl font-bold text-white tracking-tight">
+        Upload Dataset
+      </h2>
+
+      <p className="text-sm text-slate-400 max-w-xl mx-auto">
+        Upload a CAN bus telemetry dataset (.csv)
+      </p>
+    </div>
 
       <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-6">
         {!result && (
@@ -157,7 +158,7 @@ export const UploadDataset: React.FC = () => {
               }}
             />
 
-            <div className="w-16 h-16 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 mx-auto flex items-center justify-center mb-4">
+            <div className="w-20 h-20 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 mx-auto flex items-center justify-center mb-4">
               <UploadCloud className="w-8 h-8" />
             </div>
 
@@ -168,10 +169,23 @@ export const UploadDataset: React.FC = () => {
               </div>
             ) : (
               <div className="space-y-2">
-                <p className="text-sm font-bold text-slate-200">
-                  Drag & Drop CAN CSV dataset here, or <span className="text-blue-400 underline">Browse File</span>
-                </p>
-                <p className="text-[11px] text-slate-500">Supports standard CAN-Hacking dataset format (.csv up to 100MB)</p>
+             
+              <div className="space-y-3">
+              <p className="text-lg font-semibold text-slate-200">
+                Drag & drop your CSV file here
+              </p>
+
+              <p className="text-sm text-slate-400">
+                or
+                <span className="ml-1 text-blue-400 hover:text-blue-300 underline cursor-pointer">
+                  browse your computer
+                </span>
+              </p>
+
+              <p className="text-xs text-slate-500">
+                Supported format: CSV • Maximum size: 100 MB
+              </p>
+            </div>
               </div>
             )}
           </div>
@@ -207,12 +221,12 @@ export const UploadDataset: React.FC = () => {
         )}
 
         {result && (
-          <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300">
+          <div className="space-y-8 animate-in fade-in zoom-in-95 duration-300">
             <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 relative overflow-hidden">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-slate-400 font-mono-tech">Dataset Evaluation Output</span>
+                    <span className="text-xs text-slate-400 font-mono-tech">Analysis Results</span>
                     <Badge status={result.status}>{result.status}</Badge>
                     <Badge severity={getSeverityFromAttack(result.attack_type, result.confidence)}>
                       {getSeverityFromAttack(result.attack_type, result.confidence)}
@@ -224,7 +238,7 @@ export const UploadDataset: React.FC = () => {
                 </div>
 
                 <div className="text-right">
-                  <p className="text-xs text-slate-400">Transformer AI Confidence</p>
+                  <p className="text-xs text-slate-400">Prediction Confidence</p>
                   <p className="text-2xl font-black text-blue-400 font-mono-tech">
                     {formatPercent(result.confidence)}
                   </p>
@@ -267,7 +281,7 @@ export const UploadDataset: React.FC = () => {
               className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-all shadow-lg hover:shadow-blue-500/25 disabled:opacity-50"
             >
               <Zap className="w-4 h-4" />
-              Run Neural Inference
+              Analyze Dataset
             </button>
           )}
 

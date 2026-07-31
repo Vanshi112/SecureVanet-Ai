@@ -51,13 +51,13 @@ export function useBackendHealth(pollIntervalMs = 15000) {
         };
       });
     }
-  }, [addNotification]);
+  }, []);
 
   useEffect(() => {
     checkHealth();
     const interval = setInterval(checkHealth, pollIntervalMs);
     return () => clearInterval(interval);
-  }, [checkHealth, pollIntervalMs]);
+  }, [pollIntervalMs]);
 
   return {
     ...state,

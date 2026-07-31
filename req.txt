@@ -93,6 +93,7 @@ torch==2.13.0
 tornado==6.5.7
 tqdm==4.69.0
 traitlets==5.15.1
+python-can
 typing-inspection==0.4.2
 typing_extensions==4.16.0
 urllib3==2.7.0
