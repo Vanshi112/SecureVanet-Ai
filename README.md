@@ -38,7 +38,7 @@ SecureVANET-AI addresses this problem using a Transformer-based deep learning mo
 - Deep learning-based intrusion detection
 - FastAPI backend for inference
 - PostgreSQL database for prediction history
-- Modern React-based SOC dashboard
+- Modern React-based Security Operations Center (SOC) dashboard featuring live telemetry, attack    simulation, vehicle network topology visualization, and real-time CAN bus monitoring. 
 - Real-time CAN bus monitoring using SocketCAN
 - Interactive analytics and visualisation
 
@@ -58,11 +58,15 @@ The project was developed with the goal of demonstrating how AI can be applied t
 
 ### Attack Detection
 
+Supported attack classes:
+
 - Normal Traffic
 - DoS Attack
 - Fuzzy Attack
-- Gear Attack
-- RPM Attack
+- Gear Spoofing Attack
+- RPM Spoofing Attack
+
+Each detected attack is visualized in real time on the dashboard, prediction history, and vehicle network topology.
 
 ### Backend
 
@@ -77,6 +81,11 @@ The project was developed with the goal of demonstrating how AI can be applied t
 - Modern SOC dashboard
 - Responsive design
 - Live analytics
+- Vehicle Network Topology Visualization
+- Attack Simulation Panel
+- Interactive Vehicle Telemetry
+- Real-time Notifications
+- Network Topology Attack Mapping
 - Interactive charts
 - Upload interface
 - Prediction history
@@ -87,6 +96,11 @@ The project was developed with the goal of demonstrating how AI can be applied t
 
 - SocketCAN integration
 - WebSocket streaming
+- Vehicle Telemetry Dashboard
+- ECU Network Topology
+- Live WebSocket Streaming
+- Simulated & Real CAN Monitoring Modes
+- Live Attack Simulation
 - Live packet inspection
 - Threat severity indicators
 - Real-time attack alerts
@@ -226,6 +240,28 @@ The frontend will be available at:
 http://localhost:3000
 ```
 
+# Vehicle Network Topology
+
+SecureVANET-AI includes an interactive vehicle topology that visualizes critical Electronic Control Units (ECUs) within the CAN network.
+
+### ECUs
+
+- Gateway ECU
+- Engine ECU
+- ABS ECU
+- Steering ECU
+- Transmission ECU
+
+Attack Mapping
+
+| Attack | Target ECU |
+|----------|------------|
+| DoS | Gateway ECU |
+| RPM | Engine ECU |
+| Gear | Transmission ECU |
+| Steering | Steering ECU |
+
+The topology dynamically highlights the affected ECU whenever an attack is detected, providing an intuitive representation of cyber threats across the in-vehicle network.
 ---
 
 # Usage
@@ -299,28 +335,27 @@ SecureVANET-AI/
 
 Current implementation includes:
 
-- Transformer-based multiclass IDS
-- FastAPI inference API
-- PostgreSQL prediction history
-- Interactive SOC dashboard
-- CSV-based attack detection
-- Live CAN monitoring support
-- WebSocket integration
-- Real-time analytics
+- Transformer + BiLSTM + Attention IDS
+- Multiclass CAN attack detection
+- Vehicle Network Topology
+- Live Attack Simulation
+- Interactive SOC Dashboard
+- Live WebSocket Streaming
+- Real-time CAN Telemetry
+- Prediction History
+- Dataset Upload & Analysis
+- PostgreSQL Storage
 
 ---
 
 # Future Improvements
 
-- Docker deployment
-- Kubernetes support
-- Authentication and role-based access
-- Additional CAN attack categories
-- Edge deployment on embedded hardware
-- Multi-vehicle monitoring
-- Grafana integration
-- Automatic model retraining
-- Cloud deployment
+- Digital Twin Vehicle Visualization
+- Real Vehicle ECU Integration
+- SHAP-based Explainable AI
+- Multi-Vehicle Fleet Monitoring
+- Edge Deployment on Raspberry Pi / NVIDIA Jetson
+- OTA Model Updates
 
 ---
 
@@ -332,10 +367,19 @@ If you would like to improve the project, feel free to fork the repository, crea
 
 ---
 
+# Project Highlights
+
+- 🚗 AI-powered Intrusion Detection System for VANETs
+- 🧠 Transformer + BiLSTM + Attention Deep Learning Model
+- ⚡ Real-time CAN Bus Monitoring
+- 📡 WebSocket-based Live Telemetry Streaming
+- 🛰️ Interactive Vehicle Network Topology
+- 🔥 Real-time Attack Simulation
+- 📊 Security Operations Center (SOC) Dashboard
+- ⚙️ FastAPI + React Full Stack Architecture
+
 # License
-
 This project is licensed under the MIT License.
-
 ---
 
 # Author
