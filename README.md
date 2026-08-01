@@ -131,8 +131,11 @@ Each detected attack is visualized in real time on the dashboard, prediction his
 
 > *Add live monitoring screenshot here*
 
----
+
+## Network topology
 ![alt text](image.png)
+---
+
 
 # Tech Stack
 
