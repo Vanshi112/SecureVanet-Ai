@@ -1,4 +1,10 @@
-datasets/
+# Ignore all datasets
+datasets/**
+
+# But keep the scaler
+!datasets/sequences/
+!datasets/sequences/feature_scaler.pkl
+
 __pycache__/
 *.pyc
 .venv/
