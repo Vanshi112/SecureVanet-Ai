@@ -32,7 +32,6 @@ def predict_csv(INPUT_CSV: str):
     X = df.drop(columns=['label', 'attack_type', 'timestamp'], errors='ignore')
     print('\nInference Feature Names:')
     print(X.columns.tolist())
-    np.save('debug_feature_names.npy', np.array(X.columns.tolist(), dtype=object))
     print('\nLoading Feature Scaler...')
     scaler_path = PROJECT_ROOT / 'datasets' / 'sequences' / 'feature_scaler.pkl'
     scaler = joblib.load(scaler_path)
@@ -42,27 +41,28 @@ def predict_csv(INPUT_CSV: str):
     print('\nGenerating Sequences...')
     generator = InferenceSequenceGenerator(sequence_length=32)
     sequences = generator.generate(X_scaled)
-    np.save('debug_infer_seq.npy', sequences[:1])
     print('Saved debug inference sequence.')
     print(f'Generated {len(sequences):,} sequences')
     config = ModelConfig()
     predictor = Predictor(config)
     predictions = []
     confidences = []
-    for seq in sequences:
-        result = predictor.predict(seq)
-        predictions.append(result['class'])
-        confidences.append(result['confidence'])
+    BATCH_SIZE = 256
+
+    for start in range(0, len(sequences), BATCH_SIZE):
+        end = min(start + BATCH_SIZE, len(sequences))
+        batch = sequences[start:end]
+        batch_results = predictor.predict_batch(batch)
+        for result in batch_results:
+            predictions.append(result["class"])
+            confidences.append(result["confidence"])
+
     counts = Counter(predictions)
     Path('results').mkdir(exist_ok=True)
     results = pd.DataFrame({'Sequence': range(1, len(predictions) + 1), 'Prediction': predictions, 'Confidence': confidences})
     results.to_csv('results/prediction_results.csv', index=False)
-    print('\nPrediction results saved to results/prediction_results.csv')
+  
     total = len(predictions)
-    print('\n')
-    print('=' * 70)
-    print('Prediction Summary')
-    print('=' * 70)
     for cls in predictor.class_names:
         count = counts.get(cls, 0)
         percentage = count / total * 100 if total > 0 else 0
@@ -81,26 +81,14 @@ def predict_csv(INPUT_CSV: str):
         system_status = 'ATTACK DETECTED'
     else:
         system_status = 'NORMAL TRAFFIC'
-    print(f'Attack Percentage : {attack_percentage:.2f}%')
-    print(f'Threshold         : {THRESHOLD:.2f}%')
-    print(f'System Status     : {system_status}')
-    print(f'Attack Type       : {attack_type}')
-    print(f'Average Confidence: {np.mean(confidences):.2%}')
-    print('=' * 70)
     try:
         Path(ENGINEERED_CSV).unlink()
     except Exception:
         pass
-    print('\nInference completed successfully.')
-    print('Prediction report : results/prediction_results.csv')
     return {'status': system_status, 'attack_percentage': round(attack_percentage, 2), 'attack_type': attack_type, 'confidence': round(np.mean(confidences) * 100, 2), 'counts': {cls: counts.get(cls, 0) for cls in predictor.class_names}, 'report_path': 'results/prediction_results.csv'}
 
 def main():
     if len(sys.argv) != 2:
-        print('=' * 70)
-        print('Usage:')
-        print('python ml/src/predict.py <input_csv>')
-        print('=' * 70)
         sys.exit(1)
     predict_csv(sys.argv[1])
 if __name__ == '__main__':
