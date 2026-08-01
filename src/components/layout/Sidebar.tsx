@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import {
   LayoutDashboard,
   UploadCloud,
@@ -16,7 +16,10 @@ interface SidebarProps {
   onToggleCollapse: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggleCollapse }) => {
+export const Sidebar: React.FC<SidebarProps> = ({
+  isCollapsed,
+  onToggleCollapse,
+}) => {
   const navItems = [
     {
       name: 'Dashboard',
@@ -41,7 +44,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggleCollapse 
       path: '/live',
       icon: Activity,
       badge: 'LIVE',
-      badgeColor: 'bg-red-500/20 text-red-400 border-red-500/40 animate-pulse',
+      badgeColor:
+        'bg-red-500/20 text-red-400 border-red-500/40 animate-pulse',
+    },
+    {
+      name: 'Network Topology',
+      path: '/topology',
+      icon: Car,
+      badge: 'ECU',
+      badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40',
     },
     {
       name: 'Settings',
@@ -58,7 +69,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggleCollapse 
       }`}
     >
       <div className="p-3 space-y-1.5">
-        <div className="mb-4 px-2 pt-2">
+        {/* Clickable SOC Header */}
+        <Link
+          to="/"
+          className="block mb-4 px-2 pt-2 rounded-lg hover:bg-slate-900 transition-colors"
+        >
           {!isCollapsed ? (
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
               <Car className="w-4 h-4 text-blue-400" />
@@ -69,10 +84,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggleCollapse 
               <Car className="w-5 h-5" />
             </div>
           )}
-        </div>
+        </Link>
 
         {navItems.map((item) => {
           const Icon = item.icon;
+
           return (
             <NavLink
               key={item.path}
@@ -91,10 +107,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggleCollapse 
               {!isCollapsed && (
                 <div className="flex items-center justify-between w-full">
                   <span className="truncate">{item.name}</span>
+
                   {item.badge && (
                     <span
                       className={`px-1.5 py-0.5 text-[9px] font-bold rounded border ${
-                        item.badgeColor || 'bg-slate-800 text-slate-300 border-slate-700'
+                        item.badgeColor ||
+                        'bg-slate-800 text-slate-300 border-slate-700'
                       }`}
                     >
                       {item.badge}
@@ -113,11 +131,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggleCollapse 
           className="w-full flex items-center justify-center p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white transition-all border border-slate-800"
           title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
         >
-          {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
-          {!isCollapsed && <span className="ml-2 text-xs font-semibold">Collapse Menu</span>}
+          {isCollapsed ? (
+            <ChevronRight className="w-5 h-5" />
+          ) : (
+            <ChevronLeft className="w-5 h-5" />
+          )}
+
+          {!isCollapsed && (
+            <span className="ml-2 text-xs font-semibold">
+              Collapse Menu
+            </span>
+          )}
         </button>
       </div>
     </aside>
   );
 };
-

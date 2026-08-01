@@ -116,12 +116,12 @@ Each detected attack is visualized in real time on the dashboard, prediction his
 
 ## Upload Dataset
 
-> 
 ![alt text](image-1.png)
 ---
 
 ## Prediction History
 
+![alt text](image-4.png)
 ---
 
 ## Live CAN Monitoring
