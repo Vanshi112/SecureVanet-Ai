@@ -128,7 +128,6 @@ Each detected attack is visualized in real time on the dashboard, prediction his
 ![alt text](image-3.png)
 
 
-
 ## Network topology
 ![alt text](image.png)
 ---
