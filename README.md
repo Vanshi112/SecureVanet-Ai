@@ -111,25 +111,22 @@ Each detected attack is visualized in real time on the dashboard, prediction his
 
 ## Dashboard
 
-> *Add dashboard screenshot here*
-
+![alt text](image-2.png)
 ---
 
 ## Upload Dataset
 
-> *Add upload page screenshot here*
-
+> 
+![alt text](image-1.png)
 ---
 
 ## Prediction History
 
-> *Add history page screenshot here*
-
 ---
 
 ## Live CAN Monitoring
+![alt text](image-3.png)
 
-> *Add live monitoring screenshot here*
 
 
 ## Network topology
